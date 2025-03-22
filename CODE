@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Encryptor & Decryptor</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 50px; }
+        input, button { margin: 10px; padding: 10px; font-size: 16px; }
+        #output { font-weight: bold; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Math Encryptor & Decryptor</h1>
+    <input type="text" id="inputMessage" placeholder="Enter your message">
+    <button onclick="encryptMessage()">Encrypt</button>
+    <button onclick="decryptMessage()">Decrypt</button>
+    <div id="output"></div>
+
+    <script>
+        function isPrime(num) {
+            if (num < 2) return false;
+            for (let i = 2; i * i <= num; i++) {
+                if (num % i === 0) return false;
+            }
+            return true;
+        }
+
+        function getPrimeShift(n) {
+            let count = 0, num = 2;
+            while (count < n) {
+                if (isPrime(num)) count++;
+                if (count < n) num++;
+            }
+            return num;
+        }
+
+        function encryptMessage() {
+            let message = document.getElementById("inputMessage").value;
+            let shift = getPrimeShift(message.length % 10 + 1);
+            let encrypted = message.split('').map(char => 
+                String.fromCharCode(char.charCodeAt(0) + shift)
+            ).join('');
+            
+            document.getElementById("output").innerText = "Encrypted: " + encrypted;
+        }
+
+        function decryptMessage() {
+            let message = document.getElementById("inputMessage").value;
+            let shift = getPrimeShift(message.length % 10 + 1);
+            let decrypted = message.split('').map(char => 
+                String.fromCharCode(char.charCodeAt(0) - shift)
+            ).join('');
+            
+            document.getElementById("output").innerText = "Decrypted: " + decrypted;
+        }
+    </script>
+</body>
+</html>
